@@ -8,8 +8,8 @@ import androidx.room.Transaction
 import com.aurosaswat.a1to1relationshiproom.entities.Director
 import com.aurosaswat.a1to1relationshiproom.entities.School
 import com.aurosaswat.a1to1relationshiproom.entities.Student
-import com.aurosaswat.a1to1relationshiproom.entities.relation.SchoolAndDirector
-import com.aurosaswat.a1to1relationshiproom.entities.relation.SchoolWithStudents
+import com.aurosaswat.a1to1relationshiproom.entities.Subject
+import com.aurosaswat.a1to1relationshiproom.entities.relation.*
 
 @Dao
 interface SchoolDao {
@@ -24,11 +24,29 @@ interface SchoolDao {
     suspend fun insertStudent(student: Student)
 
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertStudentSubjectCrossRef(crossRef: StudentSubjectCrossRef)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertSubject(subject:Subject)
+
+
+
+
     //    :schoolName refers to the variable :schoolName passed ;)
 //    public annotation Transaction. Marks a method in a Dao class as a transaction method. ... Room will only perform at most one transaction at a time
     @Transaction
     @Query("SELECT * FROM school WHERE schoolName=:schoolName")
     suspend fun getSchoolAndDirectorWithSchoolName(schoolName:String):List<SchoolAndDirector>
+
+
+    @Transaction
+    @Query("SELECT * FROM subject WHERE subjectName=:subjectName")
+    suspend fun getStudentsOfSubject(subjectName:String):List<SubjectWithStudents>
+
+    @Transaction
+    @Query("SELECT * FROM student WHERE studentName=:studentName")
+    suspend fun getSubjectsOfStudent(studentName:String):List<StudentWithSubjects>
 
 
     /**

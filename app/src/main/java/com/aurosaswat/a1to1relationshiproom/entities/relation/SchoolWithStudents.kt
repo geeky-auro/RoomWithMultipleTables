@@ -5,6 +5,9 @@ import androidx.room.Relation
 import com.aurosaswat.a1to1relationshiproom.entities.School
 import com.aurosaswat.a1to1relationshiproom.entities.Student
 
+/**
+ * 1-N relationship
+ * */
 data class SchoolWithStudents (
     @Embedded val school:School,
     @Relation(
